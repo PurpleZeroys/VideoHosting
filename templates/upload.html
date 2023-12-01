@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Title</title>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-column">
+        <a href="/" class="site-logo">URFUBE</a>
+    </div>
+    <div class="header-column">
+        {% if user.is_authenticated %}
+            <a href="/auth/logout">Выйти</a>
+            <a href="/upload" class="active">Добавить видео</a>
+            <a href="/history">История просмотров</a>
+            <p>Пользователь: {{ user.username }}</p>
+        {% else %}
+            <a href="/auth/login">Войти</a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="main-content upload">
+    <div class="upload-container">
+        <h1 class="upload-title">Загрузить видео</h1>
+        <form action="/upload" class="upload-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="video_name">Название видео</label>
+                <input id="video_name" name="video_name" type="text" placeholder="Название видео" required>
+            </div>
+            <div class="form-group">
+                <label for="video_file">Прикрепите файл</label>
+                <input type="file" id="video_file" name="video_file" accept="video/*" required>
+            </div>
+            <div class="form-group">
+                <label for="preview">Загрузите превью</label>
+                <input type="file" id="preview" name="preview" accept="image/*">
+            </div>
+            <button id="upload" class="upload-button" type="submit" disabled>Отправить</button>
+        </form>
+    </div>
+</main>
+
+<script type="text/javascript" src={% static "scripts/upload.js" %}></script>
+
+</body>
+</html>

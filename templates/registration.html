@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Title</title>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-column">
+        <a href="/" class="site-logo">URFUBE</a>
+    </div>
+    <div class="header-column">
+        {% if user.is_authenticated %}
+            <a href="/auth/logout">Выйти</a>
+            <a href="/upload">Добавить видео</a>
+            <a href="/history">История просмотров</a>
+            <p>Пользователь: {{ user.username }}</p>
+        {% else %}
+            <a href="/auth/login">Войти</a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="main-content registration">
+    {% block content %}
+        {% if form.errors %}
+            <div class="alert-message" role="alert">
+                <p class="error">Что-то не так с вашей формой регистрации</p>
+            </div>
+        {% endif %}
+        <form class="registration-form" method="post" action="register">
+            {% csrf_token %}
+            <h1 class="registration-title">Регистрация пользователя</h1>
+            <div class="registration-fields">
+                <div class="registration-field">
+                    <p class="registration-subtitle">Имя пользователя</p>
+                    {{ form.username }}
+                </div>
+                <div class="registration-field">
+                    <p class="registration-subtitle">Пароль</p>
+                    {{ form.password1 }}
+                </div>
+                <div class="registration-field">
+                    <p class="registration-subtitle">Повторите пароль</p>
+                    {{ form.password2 }}
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+        </form>
+    {% endblock %}
+</main>
+
+</body>
+</html>
